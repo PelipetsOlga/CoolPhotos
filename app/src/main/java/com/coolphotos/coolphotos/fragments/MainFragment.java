@@ -1,17 +1,11 @@
 package com.coolphotos.coolphotos.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
@@ -29,13 +22,10 @@ import android.widget.Toast;
 import com.coolphotos.coolphotos.R;
 import com.coolphotos.coolphotos.binders.PicturesViewBinder;
 import com.coolphotos.coolphotos.provider.PictureProvider;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Olga on 14.05.2016.
@@ -48,7 +38,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private ProgressBar progressBar;
     private String picturePath;
     private boolean selectMenu = false;
-    private FloatingActionButton fab;
+    private FloatingActionButton fabCamera;
+    private FloatingActionButton fabGallery;
+    private FloatingActionsMenu fabMenu;
 
     private boolean isAddPicture = false;
 
@@ -62,10 +54,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_layout, null);
         initViews(view);
-        fillData();
-        updateFAB();
-        addPictureForEmpty();
-        setHasOptionsMenu(true);
+       // fillData();
+        //updateFAB();
+        //addPictureForEmpty();
+        //setHasOptionsMenu(true);
         return view;
     }
 
@@ -73,8 +65,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         empty = (RelativeLayout) root.findViewById(R.id.empty);
         grid = (GridView) root.findViewById(R.id.grid);
         progressBar = (ProgressBar) root.findViewById(R.id.progressbar);
-        fab = (FloatingActionButton) root.findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        fabCamera= (FloatingActionButton) root.findViewById(R.id.fab_camera);
+        fabGallery= (FloatingActionButton) root.findViewById(R.id.fab_gallery);
+        fabCamera.setOnClickListener(this);
+        fabGallery.setOnClickListener(this);
+        fabMenu= (FloatingActionsMenu) root.findViewById(R.id.multiply_actions);
     }
 
     private void fillData() {
@@ -221,14 +216,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-      /*  switch (v.getId()) {
-            case R.id.fab_pictures:
-                playPauseAlbum();
+        switch (v.getId()) {
+            case R.id.fab_camera:
+                fabMenu.collapse();
+                Toast.makeText(getActivity(), "Camera", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.eyescream_image:
-                selectPicture();
+            case R.id.fab_gallery:
+                fabMenu.collapse();
+                Toast.makeText(getActivity(), "Gallery", Toast.LENGTH_SHORT).show();
                 break;
-        }*/
+        }
     }
 
 /*

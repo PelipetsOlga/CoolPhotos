@@ -9,5 +9,9 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
+    <color name="fab1">#f57c00</color>
+    <color name="fab2">#ff9800</color>
+    <color name="fab_pressed">#e64a19</color>
+
     <color name="color_selecting_image">#99b2ebf2</color>
 </resources>
