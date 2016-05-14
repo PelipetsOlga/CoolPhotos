@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity
             if (fragment instanceof MainFragment) {
                 return closeDrawerLayout();
             } else {
-                //show main fragment
+                Fragment mainFragment = MainFragment.getInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, mainFragment).commit();
             }
         } else if (id == R.id.nav_settings) {
             if (fragment instanceof SettingsFragment) {
