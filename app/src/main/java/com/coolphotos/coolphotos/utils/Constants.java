@@ -16,6 +16,7 @@ public final class Constants {
 
     public static final int DEFAULT_PERIOD_UPDATING = 1;
     public static final int DEFAULT_DURATION = 500;
+    public static final int SCALE_DURATION=25;
     public static final long SHOW_TIME=33;
 
     public static final long SHOW_TIME_CONSCIOUS=2000;

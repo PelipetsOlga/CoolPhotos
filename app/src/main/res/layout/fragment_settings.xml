@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/white"
     android:padding="16dp">
 
     <LinearLayout
@@ -14,11 +15,12 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/concious_mode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_weight="1"
-            android:text="@string/tv_mode"
+            android:text="@string/tv_consious"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <android.support.v7.widget.SwitchCompat
@@ -48,11 +50,11 @@
         android:orientation="horizontal">
 
         <SeekBar
-            android:id="@+id/seekbar"
+            android:id="@+id/seekbar_delay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:max="20" />
+            android:max="59" />
 
 
         <TextView
@@ -119,8 +121,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="2000" />
-
+                android:max="23" />
 
             <TextView
                 android:id="@+id/tv_duration"

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +24,17 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences sPref;
     private SeekBar seekBarDelay;
     private SeekBar seekBarDuration;
-    private TextView tvDelay;
+    private TextView tvDelay, tvMode;
     private SwitchCompat switchShuffle;
     private SwitchCompat switchMode;
+    private View layoutDuration;
     private int period;
     private int duration;
+    private int labelDuration;
     private boolean shuffle;
     private boolean modeConscious;
     private AppCompatActivity activity;
+    private TextView tvDuration;
 
     @Nullable
     @Override
@@ -58,7 +62,13 @@ public class SettingsFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity = (AppCompatActivity) activity;
-        activity.setTitle(getString(R.string.action_settings));
+        activity.setTitle(getString(R.string.title_settings));
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        activity.setTitle(getString(R.string.app_name));
     }
 
     private void loadSettings() {
@@ -67,13 +77,18 @@ public class SettingsFragment extends Fragment {
         shuffle = sPref.getBoolean(Constants.SHUFFLE, Constants.DEFAULT_SHUFFLE);
         modeConscious = sPref.getBoolean(Constants.MODE_CONSCIOUS, Constants.DEFAULT_MODE_CONSCIOUS);
         duration = sPref.getInt(Constants.DURATION, Constants.DEFAULT_DURATION);
+        labelDuration = duration / Constants.SCALE_DURATION;
     }
 
     private void initViews(View view) {
         tvDelay = (TextView) view.findViewById(R.id.tv_delay);
-        seekBarDelay = (SeekBar) view.findViewById(R.id.seekbar);
+        tvDuration = (TextView) view.findViewById(R.id.tv_duration);
+        tvMode = (TextView) view.findViewById(R.id.concious_mode);
+        seekBarDelay = (SeekBar) view.findViewById(R.id.seekbar_delay);
+        seekBarDuration = (SeekBar) view.findViewById(R.id.seekbar_duration);
         switchShuffle = (SwitchCompat) view.findViewById(R.id.switch_shuffle);
         switchMode = (SwitchCompat) view.findViewById(R.id.switch_mode);
+        layoutDuration = view.findViewById(R.id.layout_time_settings);
     }
 
 
@@ -113,23 +128,26 @@ public class SettingsFragment extends Fragment {
         });
 
         switchMode.setChecked(modeConscious);
+        tvMode.setText(modeConscious ? getString(R.string.tv_consious) : getString(R.string.tv_subconsious));
+        setDurationLayoutVisibility();
         switchMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences.Editor ed = sPref.edit();
-                ed.putBoolean(Constants.MODE_CONSCIOUS, isChecked);
                 modeConscious = isChecked;
-                ed.commit();
+                saveModeContious();
+                setDurationLayoutVisibility();
             }
         });
 
-        seekBarDuration.setProgress(duration);
-        tvDelay.setText(duration + " " + (getString(R.string.milliseconds)));
-        seekBarDelay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+        seekBarDuration.setProgress(labelDuration - 1);
+        tvDuration.setText(duration + " " + (getString(R.string.milliseconds)));
+        seekBarDuration.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                duration = progress;
-                tvDelay.setText(duration + " " + ( getString(R.string.milliseconds)));
+                labelDuration = progress + 1;
+                duration = labelDuration * Constants.SCALE_DURATION;
+                tvDuration.setText(duration + " " + (getString(R.string.milliseconds)));
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putInt(Constants.DURATION, duration);
                 ed.commit();
@@ -145,6 +163,21 @@ public class SettingsFragment extends Fragment {
 
             }
         });
+    }
+
+    private void saveModeContious() {
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putBoolean(Constants.MODE_CONSCIOUS, modeConscious);
+        ed.commit();
+    }
+
+    private void setDurationLayoutVisibility() {
+        tvMode.setText(modeConscious ? getString(R.string.tv_consious) : getString(R.string.tv_subconsious));
+        if (!modeConscious) {
+            layoutDuration.setVisibility(View.GONE);
+        } else {
+            layoutDuration.setVisibility(View.VISIBLE);
+        }
     }
 
 
