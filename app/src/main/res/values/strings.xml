@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">CoolPhotos</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="tv_mode">Subconscious/Conscious</string>
+    <string name="tv_delay">Delay between slides</string>
+    <string name="minutes">minutes</string>
+    <string name="minute">minute</string>
+    <string name="tv_duration">Slide duration</string>
+    <string name="milliseconds">milliseconds</string>
+    <string name="tv_shuffle_images">Shuffle images</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
